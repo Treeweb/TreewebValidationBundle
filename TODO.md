@@ -1,25 +1,24 @@
 # TODO
 ----------------------
 
-1. L'utente può arrivare da qualsiasi parte del mondo , di conseguenza con un fuso
-   orario differente dal nostro server , dobbiamo assicurarci che lui abbia
-   compiuto x anni.
+### #1
+The user can access from anywhere in the world, and consequently with a timezone different from our server,
+we must ensure that he has minimum 'x' years.
 
+***example:***
 
-   Esempio :
+The Server is in Italy (UTC +1)
 
-   Server in Italia (UTC +1)
+My birthdate is August 13, 1987.
 
-   Io compio gli anni il 13 Agosto 1987.
+I access the site from Texas (UTC -6) August 12 at 19:00 pm -> is not my birthday yet, i have not the required age
 
-   Accedo al sito dal Texas (UTC -6) il 12 Agosto alle ore 19.00 --> non ho compiuto gli anni
+I access the site from Texas (UTC -6) on 13 August at 00.01 am -> It's my birthday, I have the required age
 
-   Accedo al sito dal Texas (UTC -6) il 13 Agosto alle ore 00.01 --> ho compiuto gli anni
+What do I need?
 
-   Cosa mi serve?
-
-   La timezone dell'utente oltre alla sua data di compleanno.
-   La data odierna in UTC.
+* The timezone of the user as well as the date of his birthday.
+* Today's date in UTC.
 
 
 
