@@ -1,0 +1,20 @@
+{
+    "name": "treeweb/treeweb-validation-bundle",
+    "description": "A collection of symfony2's constraints",
+    "require": {
+        "php" : ">= 5.3.2",
+        "symfony/validator": "dev-master"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Ruben Barilani",
+            "email": "ruben.barilani.dev@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-0": { "Treeweb\\Bundle\\TreewebValidationBundle": "" }
+    },
+    "target-dir": "Treeweb/Bundle/TreewebValidationBundle"
+}
