@@ -25,31 +25,12 @@ class MinAgeValidator extends ConstraintValidator
      */
     public function validate($value, Constraint $constraint)
     {
+        $this->isSupportedFormat($value);
+
+        $birthDate = $this->transformToDateTime($value);
+
+
         $now = new \DateTime();
-        $birthDate = null;
-
-        if (!empty($value)) {
-
-            if(is_string($value)) {
-
-                $birthDate = new \DateTime($value);
-
-            } else if($value instanceof \DateTime){
-
-                $birthDate = $value;
-
-            }else{
-
-                throw new ValidatorException("Value can be a string or \\DatetimeObject");
-            }
-
-        } else {
-            throw new ValidatorException("Value can't be empty");
-        }
-
-        /**
-         * @var $dateInterval \DateInterval
-         */
         $dateInterval = $now->diff($birthDate);
         $age = (string)$dateInterval->y;
 
@@ -63,5 +44,47 @@ class MinAgeValidator extends ConstraintValidator
             );
         }
 
+    }
+
+    /**
+     *
+     * Check value is in a supported format
+     *
+     * @param $value
+     *
+     * @return bool
+     * @throws \Symfony\Component\Validator\Exception\ValidatorException
+     */
+    protected function isSupportedFormat($value)
+    {
+        if (empty($value)) {
+            throw new ValidatorException("Value can't be empty");
+        }
+
+        if(is_string($value) || $value instanceof \DateTime) {
+            return true;
+        } else {
+            throw new ValidatorException("Value can be a string or \\DatetimeObject");
+        }
+
+        return true;
+    }
+
+    /**
+     * Tranform given value into \DateTime object
+     *
+     * @param $value
+     *
+     * @return \DateTime
+     */
+    protected function transformToDateTime($value)
+    {
+        if(is_string($value)) {
+            return new \DateTime($value);
+        }
+
+        if($value instanceof \DateTime){
+            return $value;
+        }
     }
 }
