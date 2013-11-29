@@ -12,17 +12,21 @@
 
 namespace Treeweb\Bundle\TreewebValidationBundle\Tests\Validator\Constraints;
 
-
+use PHPUnit_Framework_TestCase;
 use Treeweb\Bundle\TreewebValidationBundle\Validator\Constraints\MinAge;
 use Treeweb\Bundle\TreewebValidationBundle\Validator\Constraints\MinAgeValidator;
 
-class MinAgeValidatorTest extends \PHPUnit_Framework_TestCase
+class MinAgeValidatorTest extends PHPUnit_Framework_TestCase
 {
     protected function setUp()
     {
         $this->context = $this->getMock('Symfony\Component\Validator\ExecutionContext', array(), array(), '', false);
         $this->validator = new MinAgeValidator();
+
+        $this->reflectedValidator = new \ReflectionClass($this->validator);
+
         $this->validator->initialize($this->context);
+
 
         $this->context->expects($this->any())
             ->method('getClassName')
@@ -33,6 +37,7 @@ class MinAgeValidatorTest extends \PHPUnit_Framework_TestCase
     {
         $this->context = null;
         $this->validator = null;
+        $this->reflectedValidator = null;
     }
 
 
@@ -143,5 +148,34 @@ class MinAgeValidatorTest extends \PHPUnit_Framework_TestCase
     {
         $constraint  = new MinAge();
         $this->validator->validate(3, $constraint);
+    }
+
+    /**
+     * @expectedException \Symfony\Component\Validator\Exception\ValidatorException
+     */
+    public function testSupportedFormat()
+    {
+        $supportedFormat = $this->getMethod('isSupportedFormat');
+        $supportedFormat->invokeArgs($this->validator, array(
+               000
+            ));
+    }
+
+
+    public function testTransformToDateTime()
+    {
+        $supportedFormat = $this->getMethod('transformToDateTime');
+        $actual = $supportedFormat->invokeArgs($this->validator, array(
+                '2013-08-13'
+            ));
+        $this->assertTrue($actual instanceof \DateTime);
+    }
+
+    // Helper function to test protected methods
+    protected function getMethod($name)
+    {
+        $method = $this->reflectedValidator->getMethod($name);
+        $method->setAccessible(true);
+        return $method;
     }
 }
